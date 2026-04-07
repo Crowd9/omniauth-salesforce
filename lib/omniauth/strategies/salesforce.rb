@@ -22,6 +22,7 @@ module OmniAuth
         :redirect_uri,
         :login_hint
       ]
+      option :pkce, true
 
       def request_phase
         req = Rack::Request.new(@env)

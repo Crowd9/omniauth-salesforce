@@ -71,6 +71,11 @@ describe OmniAuth::Strategies::Salesforce do
 			end
 		end
 	end
+	describe "pkce support" do
+		it "enables pkce by default" do
+			strategy.options[:pkce].should == true
+		end
+	end
 	describe "callback phase" do
 		raw_info = nil
 		before do
@@ -185,6 +190,7 @@ describe OmniAuth::Strategies::Salesforce do
 			context "when the signature does not match" do
 				before do
 					access_token = OAuth2::AccessToken.from_hash strategy.access_token.client, {
+						'access_token' => 'token',
 						'id' => 'forged client id',
 						'issued_at' => issued_at,
 						'instance_url' => 'http://instance.salesforce.example',
@@ -200,6 +206,7 @@ describe OmniAuth::Strategies::Salesforce do
 			context "when the signature does match" do
 				before do
 					access_token = OAuth2::AccessToken.from_hash strategy.access_token.client, {
+						'access_token' => 'token',
 						'id' => client_id,
 						'issued_at' => issued_at,
 						'instance_url' => 'http://instance.salesforce.example',
